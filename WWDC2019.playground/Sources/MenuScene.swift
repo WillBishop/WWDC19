@@ -191,6 +191,9 @@ public class MenuScene: SKScene{
                 zoomed = false
                 self.animateOutOf(level: level)
             }
+            
+        } else if hitNodes.contains((startLabel as SKNode)){
+             loadLevel(1)
         }
         
         

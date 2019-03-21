@@ -34,7 +34,7 @@ public class MainLoader{
         MainLoader.setupPlane()
         MainLoader.sceneView.presentScene(welcomeScene)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.5, execute: {
             // Present the scene
             MainLoader.sceneView.presentScene(menuScene, transition: SKTransition.crossFade(withDuration: 1.0))
             menuScene.loadLevel = {level in
@@ -94,9 +94,28 @@ public class MainLoader{
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
         case 3:
+            MainLoader.menuScene?.animateInto(level: 3, finished: {
+                guard let levelScene = LevelThreeScene(fileNamed: "Level\(level)") else {
+                    fatalError("Could not find Level \(level)")
+                }
+                levelScene.quit = MainLoader.quit
+                levelScene.userDidFinishLevel = self.userDidFinishLevel
+                print("Presenting")
+                levelScene.scaleMode = .aspectFill
+                MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
+            })
             print("Loading Level 3")
         case 4:
-            print("Loading Level 4")
+            MainLoader.menuScene?.animateInto(level: 4, finished: {
+                guard let levelScene = LevelFourScene(fileNamed: "Level\(level)") else {
+                    fatalError("Could not find Level \(level)")
+                }
+                levelScene.quit = MainLoader.quit
+                levelScene.userDidFinishLevel = self.userDidFinishLevel
+                print("Presenting")
+                levelScene.scaleMode = .aspectFill
+                MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
+            })
         case 5:
             print("Loading Level 5")
         default:
@@ -120,6 +139,12 @@ public class MainLoader{
         case 3:
             MainLoader.planeLabel.run(SKAction.rotate(toAngle: 1.7, duration: 0), completion: {
             })
+        case 4:
+            MainLoader.planeLabel.run(SKAction.rotate(toAngle: 1.3, duration: 0), completion: {
+            })
+        case 5:
+            MainLoader.planeLabel.run(SKAction.rotate(toAngle: -0.8, duration: 0), completion: {
+            })
         default:
             print()
         }
@@ -138,6 +163,14 @@ public class MainLoader{
         case 2:
             MainLoader.movePlaneTo(level: 3, finished: {
                 MainLoader.startLevel(3)
+            })
+        case 3:
+            MainLoader.movePlaneTo(level: 4, finished: {
+                MainLoader.startLevel(4)
+            })
+        case 4:
+            MainLoader.movePlaneTo(level: 5, finished: {
+                MainLoader.startLevel(5)
             })
         default:
             print("Finished another level")

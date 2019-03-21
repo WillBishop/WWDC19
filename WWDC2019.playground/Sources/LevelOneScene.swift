@@ -16,12 +16,26 @@ public class LevelOneScene: SKScene{
     var previousPoint = CGPoint(x: 0, y: 0)
     
     var firstNumber = Int.random(in: 2 ... 9)
-    let secondNumber = Int.random(in: 2 ... 9)
+    var secondNumber = Int.random(in: 2 ... 9)
+    
     var finished = false
+    var processing = false
+    var questionCount = 2
+    var completedQuestions = 0
     
     private var correctFirstNumber = false
     private var correctSecondNumber = false
-    
+    /*
+     Neighbour
+     Their/There
+     Crocodile
+     February
+     Library
+     Used
+     Denial
+     Every
+     
+     */
     var correctAnswer: String{
         return String(describing: firstNumber * secondNumber)
     }
@@ -43,7 +57,6 @@ public class LevelOneScene: SKScene{
             fontSize: 65.0,
             withColor: ColorManager.neonWhite
         )
-        FontManager.convertToHalogen(label: questionLabel, text: "What is \(firstNumber) times \(secondNumber)?", fontSize: 60, withColor: ColorManager.neonBlue)
         enterNodes = [
             SKShapeNode(rectOf: CGSize(width: 100, height: 175)),
             SKShapeNode(rectOf: CGSize(width: 100, height: 175)),
@@ -51,7 +64,7 @@ public class LevelOneScene: SKScene{
         
         enterNodes[0].name = "enterNode1"
         enterNodes[1].name = "enterNode2"
-    
+        
         enterNodes[0].position.x = self.frame.midX - enterNodes[0].frame.width + 10
         enterNodes[1].position.x = self.frame.midX + enterNodes[1].frame.width - 10
         
@@ -70,7 +83,16 @@ public class LevelOneScene: SKScene{
     }
     
     func setupNumbers(){
-        print(potentialAnswers.count)
+        potentialAnswers.forEach {num in
+            num.removeFromParent()
+        }
+        potentialAnswers.removeAll()
+        print("Assigning numbers")
+        firstNumber = Int.random(in: 2 ... 9)
+        secondNumber = Int.random(in: 2 ... 9)
+        print("Constructing label")
+        FontManager.convertToHalogen(label: questionLabel, text: "What is \(firstNumber) times \(secondNumber)?", fontSize: 60, withColor: ColorManager.neonBlue)
+
         for answer in 0 ... 9{
             let answerLabel = SKLabelNode()
             FontManager.convertToHalogen(label: answerLabel, text: String(describing: answer), fontSize: 80.0, withColor: ColorManager.neonWhite)
@@ -104,7 +126,7 @@ public class LevelOneScene: SKScene{
     public override func mouseDragged(with event: NSEvent) {
         let point = event.location(in: self)
         if let hitNode = draggingNode ?? self.nodes(at: point).first as? SKLabelNode {
-    
+            
             draggingNode = hitNode
             if !( ((hitNode.name?.contains("enter")) ?? false) || ((hitNode.name?.contains("back")) ?? false) || ((hitNode.name?.contains("question")) ?? false)){
                 let newPoint = CGPoint(x: point.x, y: point.y - (hitNode.frame.height / 2))
@@ -152,9 +174,27 @@ public class LevelOneScene: SKScene{
                         }
                     }
                     if correctFirstNumber && correctSecondNumber && !finished{
-                        finished = true
                         print("Finsihed")
-                        self.userDidFinishLevel(1)
+                        print(completedQuestions)
+                        print(questionCount)
+                        if completedQuestions <= questionCount && !processing{
+                            processing = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75, execute: {
+                                self.finished = false
+                                self.completedQuestions += 1
+                                print("Incremented number")
+                                self.setupNumbers()
+                                print("Setup numbers")
+                                self.correctFirstNumber = false
+                                self.correctSecondNumber = false
+                                self.processing = false
+                                
+                            })
+                        } else {
+                            if completedQuestions >= questionCount{
+                               self.userDidFinishLevel(1)
+                            }
+                        }
                     }
                 }
             }

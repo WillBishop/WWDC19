@@ -91,7 +91,9 @@ public class LevelTwoScene: SKScene{
                     print("No sound for key")
                 }
                 if playedKeys.contains(order){
-                    self.userDidFinishLevel(2)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        self.userDidFinishLevel(2)
+                    })
                 }
             }
         }
