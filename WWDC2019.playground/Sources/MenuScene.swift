@@ -135,6 +135,7 @@ public class MenuScene: SKScene{
         let finalLine = CGMutablePath()
         finalLine.move(to: lastPoint)
         finalLine.addLine(to: WWDCPoint)
+        self.levelPaths.append(finalLine)
         
         let shape = SKShapeNode()
         shape.path = finalLine

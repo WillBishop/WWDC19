@@ -117,7 +117,16 @@ public class MainLoader{
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
         case 5:
-            print("Loading Level 5")
+            MainLoader.menuScene?.animateInto(level: 5, finished: {
+                guard let levelScene = LevelFiveScene(fileNamed: "Level\(level)") else {
+                    fatalError("Could not find Level \(level)")
+                }
+                levelScene.quit = MainLoader.quit
+                levelScene.userDidFinishLevel = self.userDidFinishLevel
+                print("Presenting")
+                levelScene.scaleMode = .aspectFill
+                MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
+            })
         default:
             fatalError("Could not find Level \(level)")
         }
@@ -145,6 +154,9 @@ public class MainLoader{
         case 5:
             MainLoader.planeLabel.run(SKAction.rotate(toAngle: -0.8, duration: 0), completion: {
             })
+        case 6:
+            MainLoader.planeLabel.run(SKAction.rotate(toAngle: -0.5, duration: 0), completion: {
+            })
         default:
             print()
         }
@@ -171,6 +183,10 @@ public class MainLoader{
         case 4:
             MainLoader.movePlaneTo(level: 5, finished: {
                 MainLoader.startLevel(5)
+            })
+        case 5:
+            MainLoader.movePlaneTo(level: 6, finished: {
+                
             })
         default:
             print("Finished another level")
