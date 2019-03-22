@@ -2,8 +2,8 @@ import Foundation
 import SpriteKit
 
 public class WelcomeScene: SKScene{
-    private var welcomeLabel: SKLabelNode?
-    private var instructionLabel: SKLabelNode?
+    public var welcomeLabel: SKLabelNode?
+    public var instructionLabel: SKLabelNode?
     
     private var labels = [SKLabelNode]()
     var welcomeSize: CGFloat = 50.0

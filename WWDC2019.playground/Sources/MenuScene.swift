@@ -111,6 +111,10 @@ public class MenuScene: SKScene{
             shape.zPosition = 0.01
             self.addChild(shape)
             
+            //Construct a '?' button for users to get help
+            let helpLabel = SKLabelNode(text: "?")
+            FontManager.convertToHalogen(label: helpLabel, text: "?", fontSize: 50.0, withColor: ColorManager.neonWhite)
+            helpLabel.position = CGPoint(x: self.frame.maxX - helpLabel.frame.width, y: self.frame.minY + (helpLabel.frame.height / 2))
             
             //Append the level to our `level` array.
             self.levels.append(level)
@@ -123,6 +127,11 @@ public class MenuScene: SKScene{
             
             //Add our level label
             self.addChild(levelLabel)
+            
+            //Add our help node
+            self.addChild(helpLabel)
+            
+            
             
             
         }
@@ -195,11 +204,28 @@ public class MenuScene: SKScene{
             
         } else if hitNodes.contains((startLabel as SKNode)){
              loadLevel(1)
+        } else {
+            print("Else")
+            guard let hitNode = hitNodes.first else {return}
+            print("Got nodes")
+            if let helpNode = hitNode as? SKLabelNode{
+                if helpNode.attributedText?.string == "?"{
+                    print("Getting help")
+                    self.getHelpForLevel(0)
+                    
+                } else {
+                    print("Got this instead")
+                    print(helpNode.attributedText?.string)
+                }
+            } else{
+                print("Wouldn't let as label")
+            }
         }
         
         
     }
     public var loadLevel: (Int) -> Void = {_ in}
+    public var getHelpForLevel: (Int) -> Void = {_ in}
     
     
     

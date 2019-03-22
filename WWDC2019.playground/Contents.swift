@@ -2,7 +2,7 @@
 
 import PlaygroundSupport
 import SpriteKit
-
+1
 
 //: Here we register our font for use throught our playground.
 
@@ -17,6 +17,7 @@ public class MainLoader{
     //Instantiate our two main scenes
     private static let menuScene = MenuScene(fileNamed: "GameScene")
     private static let welcomeScene = WelcomeScene(fileNamed: "WelcomeScene")
+    private static let finishedScene = WelcomeScene(fileNamed: "FinishedScene")
     
     //Create our fun little plane node :)
     public static let planeLabel = SKLabelNode(text: "✈️")
@@ -37,8 +38,11 @@ public class MainLoader{
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.5, execute: {
             // Present the scene
             MainLoader.sceneView.presentScene(menuScene, transition: SKTransition.crossFade(withDuration: 1.0))
-            menuScene.loadLevel = {level in
+            menuScene.loadLevel = { level in
                 MainLoader.startLevel(level)
+            }
+            menuScene.getHelpForLevel = { level in
+                MainLoader.getHelpForLevel(level)
             }
         })
         
@@ -63,6 +67,22 @@ public class MainLoader{
         MainLoader.planeLabel.run(SKAction.rotate(toAngle: -0.6, duration: 0))
         menuScene?.addChild(MainLoader.planeLabel)
 
+    }
+    public static func getHelpForLevel(_ level: Int){
+        guard let helpScene = HelpScene(fileNamed: "HelpScene") else {return}
+        helpScene.scaleMode = .aspectFill
+        helpScene.quit = MainLoader.quit
+        switch level{
+        case 0: //Menu
+            helpScene.title = "Menu"
+            helpScene.subtitle = "Click a level with your mouse to start"
+        default:
+            helpScene.title = "Help"
+            helpScene.subtitle = ""
+        }
+       print("Presenting")
+        MainLoader.sceneView.presentScene(helpScene, transition: SKTransition.fade(withDuration: 0.5))
+        
     }
     
     public static func startLevel(_ level: Int){
@@ -186,7 +206,10 @@ public class MainLoader{
             })
         case 5:
             MainLoader.movePlaneTo(level: 6, finished: {
-                
+               print("Presenting")
+                guard let finishedScene = MainLoader.finishedScene else {return}
+                MainLoader.sceneView.presentScene(finishedScene, transition: SKTransition.crossFade(withDuration: 1.0))
+
             })
         default:
             print("Finished another level")
