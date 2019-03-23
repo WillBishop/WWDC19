@@ -4,10 +4,10 @@ import AppKit
 public class ColorManager{
     
     //Define our neon colors for use throughout our app.
-    static let neonBlue = NSColor(red:0.46, green:0.98, blue:0.99, alpha:1.0)
-    static let neonGreen = NSColor(red:0.40, green:1.00, blue:0.70, alpha:1.0)
-    static let neonWhite = NSColor(red: 1, green: 1, blue: 1, alpha: 1)
-    static let neonRed = ColorManager.convertToColor("#E27DBC")
+    public static let neonBlue = NSColor(red:0.46, green:0.98, blue:0.99, alpha:1.0)
+    public static let neonGreen = NSColor(red:0.40, green:1.00, blue:0.70, alpha:1.0)
+    public static let neonWhite = NSColor(red: 1, green: 1, blue: 1, alpha: 1)
+    public static let neonRed = ColorManager.convertToColor("#E27DBC")
     
     public static func convertToColor(_ hex: String, alpha: CGFloat = 1.0) -> NSColor{
         //First we trim the hex to remove any whitespace or new lines

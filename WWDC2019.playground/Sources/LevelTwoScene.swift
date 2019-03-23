@@ -16,6 +16,8 @@ public class LevelTwoScene: SKScene{
     private var orderLabel: SKLabelNode?
     private var pianoInstruction: SKLabelNode?
     
+
+    
     public override func didMove(to view: SKView) {
         backButton = self.childNode(withName: "backButton") as? SKLabelNode
         questionLabel = self.childNode(withName: "questionLabel") as? SKLabelNode
@@ -58,10 +60,12 @@ public class LevelTwoScene: SKScene{
         self.handleKeyUp(event)
     }
     
+    
     func handleKeyDownEvent(_ event: NSEvent){
         if let pressedCharacters = event.characters{
             pressedCharacters.forEach {char in
                 playedKeys += (String(char).uppercased())
+                
                 switch char{
                 case "a", "A":
                     print("Play Key A")

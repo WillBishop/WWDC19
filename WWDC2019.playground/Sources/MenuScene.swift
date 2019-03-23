@@ -9,7 +9,7 @@ public class MenuScene: SKScene{
     private var endLabel: SKLabelNode!
     
     //Declare the array of levels nodes for hit detection
-    private var levels = [LevelNode]()
+    public var levels = [LevelNode]()
     public var levelPaths = [CGMutablePath]()
     
     //This should not change
@@ -86,7 +86,7 @@ public class MenuScene: SKScene{
             levelLabel.fontSize = 50
             levelLabel.text = "\(level.level ?? 0)"
             levelLabel.position = level.position
-            levelLabel.fontColor = NSColor(red:0.69, green:0.44, blue:0.97, alpha:1.0)
+            levelLabel.fontColor = ColorManager.neonRed
             levelLabel.verticalAlignmentMode = .center
             
             level.associatedLabel = levelLabel
@@ -189,13 +189,17 @@ public class MenuScene: SKScene{
         
         let levelNodes = hitNodes.compactMap {$0 as? LevelNode}
         if let level = levelNodes.first{
-            guard let _ = level.level else {
+            guard let levelNumber = level.level else {
                 fatalError("Could not find level")
             }
             
+            //If the level isn't unlocked yet and it's not the first level
+            if levels[levelNumber].associatedLabel?.fontColor == ColorManager.neonRed && levelNumber != 1{
+                return
+            }
             if !zoomed{
                 zoomed = true
-                loadLevel(level.level!)
+                loadLevel(levelNumber)
             } else {
                 print("Zoom out")
                 zoomed = false

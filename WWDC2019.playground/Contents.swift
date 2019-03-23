@@ -1,4 +1,13 @@
-//: WWDC 2019 Scholarship Submission
+//: ### WWDC 2019 Scholarship Submission
+
+//: To play the game, open the 'Assistant Editor' and choose 'Live View' in the new window.
+
+//: This game consists of 5 levels, each focusing on a different aspect of early education.
+//: 1. Mathematics
+//: 2. Music
+//: 3. Observational Skills
+//: 4. Literacy
+//: 5. Geography
 
 import PlaygroundSupport
 import SpriteKit
@@ -93,6 +102,7 @@ public class MainLoader{
                     guard let levelScene = LevelOneScene(fileNamed: "Level\(level)") else {
                         fatalError("Could not find Level \(level)")
                     }
+                    
                     levelScene.quit = MainLoader.quit
                     levelScene.userDidFinishLevel = MainLoader.userDidFinishLevel
                     print("Presenting")
@@ -187,6 +197,8 @@ public class MainLoader{
     
     public static var userDidFinishLevel: (Int) -> Void = {level in
         print("Finished \(level)")
+        menuScene?.levels[level - 1].associatedLabel?.fontColor = ColorManager.neonGreen
+
         switch level{
         case 1:
             MainLoader.movePlaneTo(level: 2, finished: {

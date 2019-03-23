@@ -29,6 +29,7 @@ public class FontManager{
         label?.attributedText = halogenMessage
     }
     
+    //Given a file name and extension, this function will dynamically load that function into memory for use by our application.
     public static func registerFont(withName fileName: String, andExtension fileExtension: String = "ttf"){
         let fontURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension)
         CTFontManagerRegisterFontsForURL(fontURL! as CFURL, CTFontManagerScope.process, nil)

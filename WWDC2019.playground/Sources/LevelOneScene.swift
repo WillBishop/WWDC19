@@ -10,7 +10,8 @@ public class LevelOneScene: SKScene{
     
     //This is the nodes where users enter their numbers
     private var enterNodes: [SKShapeNode] = []
-    
+    private var counterLabel: SKLabelNode?
+
     private var potentialAnswers: [SKLabelNode] = []
     
     var previousPoint = CGPoint(x: 0, y: 0)
@@ -21,21 +22,15 @@ public class LevelOneScene: SKScene{
     var finished = false
     var processing = false
     var questionCount = 2
-    var completedQuestions = 0
+    var completedQuestions = 0{
+        didSet{
+            FontManager.convertToHalogen(label: counterLabel, text: "\(completedQuestions)/\(questionCount + 1)", fontSize: 50, withColor: ColorManager.neonGreen)
+        }
+    }
     
     private var correctFirstNumber = false
     private var correctSecondNumber = false
-    /*
-     Neighbour
-     Their/There
-     Crocodile
-     February
-     Library
-     Used
-     Denial
-     Every
-     
-     */
+
     var correctAnswer: String{
         return String(describing: firstNumber * secondNumber)
     }
@@ -47,8 +42,10 @@ public class LevelOneScene: SKScene{
         //Assign our label variables a value, corresponding with their on-screen components.
         backButton = self.childNode(withName: "backButton") as? SKLabelNode
         questionLabel = self.childNode(withName: "questionLabel") as? SKLabelNode
-        
-        
+        counterLabel = self.childNode(withName: "counterLabel") as? SKLabelNode
+
+        FontManager.convertToHalogen(label: counterLabel, text: "\(completedQuestions)/\(questionCount + 1)", fontSize: 50, withColor: ColorManager.neonGreen)
+
         
         //Convert each label on the page to use the halogen font included with the bundle.
         FontManager.convertToHalogen(
