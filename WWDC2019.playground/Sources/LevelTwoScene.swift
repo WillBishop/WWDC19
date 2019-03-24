@@ -73,31 +73,31 @@ public class LevelTwoScene: SKScene{
                 //Handle the key press
                 switch char{
                 case "a", "A":
-                    print("Play Key A")
+                    
                     self.playKey("a")
                     self.animateKeyPress(forKey: "A", down: true)
                 case "s", "S":
-                    print("Play Key S")
+                    
                     self.playKey("s")
                     self.animateKeyPress(forKey: "S", down: true)
                 case "d", "D":
-                    print("Play Key D")
+                    
                     self.playKey("d")
                     self.animateKeyPress(forKey: "D", down: true)
                 case "f", "F":
-                    print("Play Key F")
+                    
                     self.playKey("f")
                     self.animateKeyPress(forKey: "F", down: true)
                 case "g", "G":
-                    print("Play Key G")
+                    
                     self.playKey("g")
                     self.animateKeyPress(forKey: "G", down: true)
                 case "h", "H":
-                    print("Play Key H")
+                    
                     self.playKey("h")
                     self.animateKeyPress(forKey: "H", down: true)
                 default:
-                    print("No sound for key")
+                    print("No key for key")
                 }
                 //If our played keys contains the correct order, the user can proceed
                 if playedKeys.contains(order){
@@ -118,25 +118,24 @@ public class LevelTwoScene: SKScene{
             pressedCharacters.forEach {char in
                 switch char{
                 case "a", "A":
-                    print("Play Key A")
+                    
                     self.animateKeyPress(forKey: "A", down: false)
                 case "s", "S":
-                    print("Play Key S")
+                    
                     self.animateKeyPress(forKey: "S", down: false)
                 case "d", "D":
-                    print("Play Key D")
+                    
                     self.animateKeyPress(forKey: "D", down: false)
                 case "f", "F":
-                    print("Play Key F")
+                    
                     self.animateKeyPress(forKey: "F", down: false)
                 case "g", "G":
-                    print("Play Key G")
+                    
                     self.animateKeyPress(forKey: "G", down: false)
                 case "h", "H":
-                    print("Play Key H")
                     self.animateKeyPress(forKey: "H", down: false)
                 default:
-                    print("No sound for key")
+                    print("No key for key")
                 }
             }
         }

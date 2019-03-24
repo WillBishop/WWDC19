@@ -89,7 +89,7 @@ public class MainLoader{
             helpScene.title = "Help"
             helpScene.subtitle = ""
         }
-       print("Presenting")
+       
         MainLoader.sceneView.presentScene(helpScene, transition: SKTransition.fade(withDuration: 0.5))
         
     }
@@ -105,7 +105,7 @@ public class MainLoader{
                     
                     levelScene.quit = MainLoader.quit
                     levelScene.userDidFinishLevel = MainLoader.userDidFinishLevel
-                    print("Presenting")
+                    
                     levelScene.scaleMode = .aspectFill
                     MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
                 })
@@ -119,7 +119,7 @@ public class MainLoader{
                 }
                 levelScene.quit = MainLoader.quit
                 levelScene.userDidFinishLevel = self.userDidFinishLevel
-                print("Presenting")
+                
                 levelScene.scaleMode = .aspectFill
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
@@ -130,11 +130,11 @@ public class MainLoader{
                 }
                 levelScene.quit = MainLoader.quit
                 levelScene.userDidFinishLevel = self.userDidFinishLevel
-                print("Presenting")
+                
                 levelScene.scaleMode = .aspectFill
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
-            print("Loading Level 3")
+            
         case 4:
             MainLoader.menuScene?.animateInto(level: 4, finished: {
                 guard let levelScene = LevelFourScene(fileNamed: "Level\(level)") else {
@@ -142,19 +142,19 @@ public class MainLoader{
                 }
                 levelScene.quit = MainLoader.quit
                 levelScene.userDidFinishLevel = self.userDidFinishLevel
-                print("Presenting")
+                
                 levelScene.scaleMode = .aspectFill
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
         case 5:
-            print("Loading five")
+            
             MainLoader.menuScene?.animateInto(level: 5, finished: {
                 guard let levelScene = LevelFiveScene(fileNamed: "Level\(level)") else {
                     fatalError("Could not find Level \(level)")
                 }
                 levelScene.quit = MainLoader.quit
                 levelScene.userDidFinishLevel = self.userDidFinishLevel
-                print("Presenting")
+                
                 levelScene.scaleMode = .aspectFill
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
@@ -189,7 +189,7 @@ public class MainLoader{
             MainLoader.planeLabel.run(SKAction.rotate(toAngle: -0.5, duration: 0), completion: {
             })
         default:
-            print()
+            print("no path")
         }
         MainLoader.planeLabel.run(SKAction.follow(MainLoader.menuScene!.levelPaths[level - 1], asOffset: false, orientToPath: false, duration: 2.0), completion: {
             finished()
@@ -197,7 +197,7 @@ public class MainLoader{
     }
     
     public static var userDidFinishLevel: (Int) -> Void = {level in
-        print("Finished \(level)")
+        
         menuScene?.levels[level - 1].associatedLabel?.fontColor = ColorManager.neonGreen
 
         switch level{
@@ -219,13 +219,13 @@ public class MainLoader{
             })
         case 5:
             MainLoader.movePlaneTo(level: 6, finished: {
-               print("Presenting")
+               
                 guard let finishedScene = MainLoader.finishedScene else {return}
                 MainLoader.sceneView.presentScene(finishedScene, transition: SKTransition.crossFade(withDuration: 1.0))
 
             })
         default:
-            print("Finished another level")
+            print("No level")
         }
         MainLoader.quitLevel()
     }

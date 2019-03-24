@@ -119,7 +119,7 @@ public class LevelOneScene: SKScene{
             
             while numberIntersectsWithImportantObjects(answerLabel){
                 let positionY = CGFloat(Int.random(in: min ... max))
-                print(positionY)
+                
                 answerLabel.position.y = positionY
                 answerLabel.position.x = CGFloat(Int.random(in: -500 ... 500))
             }
@@ -156,7 +156,7 @@ public class LevelOneScene: SKScene{
                         
                         //First enter box
                         if index == 0{
-                            print("\(hitNode.attributedText?.string) into \(correctAnswer.first!)")
+                            
                             if hitNode.attributedText?.string == String(correctAnswer.first!){
                                 //Place the number in the center of the enter box
                                 hitNode.position = CGPoint(x: enterNode.frame.midX, y: enterNode.frame.midY - (hitNode.frame.height / 2 ))
@@ -175,7 +175,7 @@ public class LevelOneScene: SKScene{
                         }
                         //Second enter box
                         if index == 1{
-                            print("\(hitNode.attributedText?.string) into \(correctAnswer.last!)")
+                            
                             if hitNode.attributedText?.string == String(correctAnswer.last!){
                                 //Place the number in the center of the enter box
                                 hitNode.position = CGPoint(x: enterNode.frame.midX, y: enterNode.frame.midY - (hitNode.frame.height / 2 ))
@@ -200,18 +200,18 @@ public class LevelOneScene: SKScene{
                     }
                     //IF the user has both numbers correct and hasn't already finished, we check if there are any questions left.
                     if correctFirstNumber && correctSecondNumber && !finished{
-                        print("Finsihed")
-                        print(completedQuestions)
-                        print(questionCount)
+                        
+                        
+                        
                         //IF there are more questions, we generate a new one
                         if completedQuestions <= questionCount && !processing{
                             processing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.75, execute: {
                                 self.finished = false
                                 self.completedQuestions += 1
-                                print("Incremented number")
+                                
                                 self.setupNumbers()
-                                print("Setup numbers")
+                                
                                 self.correctFirstNumber = false
                                 self.correctSecondNumber = false
                                 self.processing = false
@@ -231,7 +231,7 @@ public class LevelOneScene: SKScene{
     public override func mouseDown(with event: NSEvent) {
         let point = event.location(in: self)
         let hitNodes = self.nodes(at: point)
-        print(point)
+        
         //If the user clicks the back button, quit
         if hitNodes.contains(where: {$0.name == "backButton"}){
             quit()

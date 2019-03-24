@@ -50,11 +50,10 @@ public class HelpScene: SKScene{
         self.labels.forEach { label in
             var size: CGFloat = 0.0
             var name = label.name ?? ""
-            print(name)
             if name == "title"{
                 size = titleSize
             } else if name == "subtitle"{
-                print("Assigning subbitlte size")
+                
                 size = subtitleSize
             } else if name.contains("back"){
                 size = 65.0
@@ -85,7 +84,6 @@ public class HelpScene: SKScene{
         let point = event.location(in: self)
 
         let hitNodes = self.nodes(at: point)
-        print(point)
         //If the user clicks the back button, quit
         if hitNodes.contains(where: {$0.name == "backButton"}){
             quit()

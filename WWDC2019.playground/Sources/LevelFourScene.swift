@@ -127,7 +127,6 @@ public class LevelFourScene: SKScene{
             //While it intersects with an important object, we randomly choose a new location.
             while numberIntersectsWithImportantObjects(answerLabel){
                 let positionY = CGFloat(Int.random(in: minY ... maxY))
-                print(positionY)
                 answerLabel.position.y = positionY
                 answerLabel.position.x = CGFloat(Int.random(in: minX ... maxX))
             }
@@ -168,10 +167,7 @@ public class LevelFourScene: SKScene{
                 //If the user is holding a letter over the box
                 if self.enterBox?.contains(position) ?? false{
                     guard let character = hitNode as? SKLabelNode else {return}
-                    print("Let as character")
                     guard let correctLetter = currentSentence?.correctLetter else {return}
-                    print("Found correct letter \(String(correctLetter).lowercased())")
-                    print("Currently holding \(character.text?.lowercased())")
                     
                     //If the user is holding the correct letter.
                     if character.attributedText?.string.lowercased() == String(correctLetter).lowercased(){

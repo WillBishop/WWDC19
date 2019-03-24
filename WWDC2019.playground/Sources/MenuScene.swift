@@ -40,7 +40,7 @@ public class MenuScene: SKScene{
         self.camera = cameraNode
         
         for levelCount in 1 ... numberOfLevels{
-            print("Creating Level \(levelCount)")
+            
             
             //Create a LevelNode (SKShapeNode)
             let level = LevelNode(circleOfRadius: 30)
@@ -186,45 +186,45 @@ public class MenuScene: SKScene{
     public override func mouseDown(with event: NSEvent) {
         let point = event.location(in: self)
         let hitNodes = self.nodes(at: point)
-        print("Clicked")
+        
         let levelNodes = hitNodes.compactMap {$0 as? LevelNode}
         if let level = levelNodes.first{
-            print("let first")
+            
             guard let levelNumber = level.level else {
-                print("Lol no")
+                
                 fatalError("Could not find level")
             }
             
             
             if !zoomed{
                 zoomed = true
-                print("Loading level \(levelNumber)")
+                
                 loadLevel(levelNumber)
             } else {
-                print("Zoom out")
+                
                 zoomed = false
                 self.animateOutOf(level: level)
             }
             
         } else if hitNodes.contains((startLabel as SKNode)){
-            print("Load first")
-            print("AHFRISGH")
+            
+            
              loadLevel(1)
         } else {
-            print("Else")
+            
             guard let hitNode = hitNodes.first else {return}
-            print("Got nodes")
+            
             if let helpNode = hitNode as? SKLabelNode{
                 if helpNode.attributedText?.string == "?"{
-                    print("Getting help")
+                    
                     self.getHelpForLevel(0)
                     
                 } else {
-                    print("Got this instead")
-                    print(helpNode.attributedText?.string)
+                    
+                    
                 }
             } else{
-                print("Wouldn't let as label")
+                
             }
         }
         

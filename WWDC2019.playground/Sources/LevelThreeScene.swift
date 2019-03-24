@@ -103,7 +103,7 @@ public class LevelThreeScene: SKScene{
         hitNodes.forEach {node in
             //If the node is in our difference node region, add a found circle to it and append that to our foundNodes
             if let hitDifference = self.differenceNodes.first(where: {$0 == (node as? SKSpriteNode)}){
-                print("Found difference")
+                
                 if !foundNodes.contains(hitDifference){
                     self.addFoundCircle(to: hitDifference)
                     foundNodes.append(hitDifference)

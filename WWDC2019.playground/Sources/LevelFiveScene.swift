@@ -100,15 +100,15 @@ public class LevelFiveScene: SKScene{
         for potentialNode in nodes{
             let node = self.selectedNode ?? potentialNode //We use this to use the selectedNode if one exists, otherwise we use the `potentialNode` variable in our for loop.
             guard let name = node.name else {continue} //Ensure it has a name, otherwise don't do anything with it.
-            guard let stateO = state(rawValue: name) else {print("Wouldn't let state struct from \(name)"); continue} //Ensure we can struct a state case from it.
-            guard let snapNode = stateSnapNodes[stateO] else {print("Wouldn't let snap node from \(stateSnapNodes[stateO])");continue} //Ensure we can find our snap node.
+            guard let stateO = state(rawValue: name) else {continue} //Ensure we can struct a state case from it.
+            guard let snapNode = stateSnapNodes[stateO] else {continue} //Ensure we can find our snap node.
             
             //If all of the above succeeds, we can confirm we've picked up a valid node and can assign it to our selectedNode variable, ensuring no other node is interacted with.
             self.selectedNode = node
             
             //If our snap node contains the position of our mouse, we can snap it into place
             if snapNode.frame.contains(position){
-                print("Snapping")
+                
                 
                 //Move our node to the snapNode position.
                 node.position = snapNode.position
