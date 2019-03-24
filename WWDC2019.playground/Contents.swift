@@ -11,7 +11,7 @@
 
 import PlaygroundSupport
 import SpriteKit
-1
+
 
 //: Here we register our font for use throught our playground.
 
@@ -147,6 +147,7 @@ public class MainLoader{
                 MainLoader.sceneView.presentScene(levelScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1))
             })
         case 5:
+            print("Loading five")
             MainLoader.menuScene?.animateInto(level: 5, finished: {
                 guard let levelScene = LevelFiveScene(fileNamed: "Level\(level)") else {
                     fatalError("Could not find Level \(level)")

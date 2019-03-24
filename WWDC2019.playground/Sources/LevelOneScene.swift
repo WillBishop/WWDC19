@@ -14,27 +14,36 @@ public class LevelOneScene: SKScene{
 
     private var potentialAnswers: [SKLabelNode] = []
     
-    var previousPoint = CGPoint(x: 0, y: 0)
-    
+    //Generate two random numbers, from 2 to 9.
+    //0 is omitted as 0 times anything is 0 and 1 is omitted as I like to avoid numbers where when x * y, the result is less than 10.
     var firstNumber = Int.random(in: 2 ... 9)
     var secondNumber = Int.random(in: 2 ... 9)
     
     var finished = false
+    
+    //Processing indicators if we're in the middle of updating the scene.
     var processing = false
+    
+    //The number of questions n - 1
     var questionCount = 2
+    
+    //When this is set we update our counter label.
     var completedQuestions = 0{
         didSet{
             FontManager.convertToHalogen(label: counterLabel, text: "\(completedQuestions)/\(questionCount + 1)", fontSize: 50, withColor: ColorManager.neonGreen)
         }
     }
     
+    //Indicates if the user has got it right
     private var correctFirstNumber = false
     private var correctSecondNumber = false
 
+    //Our correct answer is treated as a string and is a read-only variable.
     var correctAnswer: String{
         return String(describing: firstNumber * secondNumber)
     }
-    var isDraggingNode = false
+    
+    //We keep track of our currently dragged node
     var draggingNode: SKLabelNode?
     
     public override func didMove(to view: SKView) {
@@ -59,12 +68,15 @@ public class LevelOneScene: SKScene{
             SKShapeNode(rectOf: CGSize(width: 100, height: 175)),
         ]
         
+        //Give out enter boxes name for detection later
         enterNodes[0].name = "enterNode1"
         enterNodes[1].name = "enterNode2"
         
+        //Place them close to each other.
         enterNodes[0].position.x = self.frame.midX - enterNodes[0].frame.width + 10
         enterNodes[1].position.x = self.frame.midX + enterNodes[1].frame.width - 10
         
+        //Add them to our view
         enterNodes.forEach{ node in
             self.addChild(node)
         }
@@ -73,6 +85,7 @@ public class LevelOneScene: SKScene{
         
     }
     
+    //If the number intersects with one of our important elements, we return true, indicating to the caller to choose a new position.
     func numberIntersectsWithImportantObjects(_ answerLabel: SKLabelNode) -> Bool{
         return self.potentialAnswers.contains(where: {$0.frame.intersects(answerLabel.frame)}) ||
             self.enterNodes.contains(where: {$0.frame.intersects(answerLabel.frame)}) ||
@@ -80,16 +93,20 @@ public class LevelOneScene: SKScene{
     }
     
     func setupNumbers(){
+        //Remove all existing numbers
         potentialAnswers.forEach {num in
             num.removeFromParent()
         }
         potentialAnswers.removeAll()
-        print("Assigning numbers")
+        
+        //Generate a new number pair
         firstNumber = Int.random(in: 2 ... 9)
         secondNumber = Int.random(in: 2 ... 9)
-        print("Constructing label")
+        
+        //Construct our label with our new numbers
         FontManager.convertToHalogen(label: questionLabel, text: "What is \(firstNumber) times \(secondNumber)?", fontSize: 60, withColor: ColorManager.neonBlue)
 
+        //Add each number to our view, randomly placed with no intersections with important objects or with other numbers.
         for answer in 0 ... 9{
             let answerLabel = SKLabelNode()
             FontManager.convertToHalogen(label: answerLabel, text: String(describing: answer), fontSize: 80.0, withColor: ColorManager.neonWhite)
@@ -116,18 +133,23 @@ public class LevelOneScene: SKScene{
         
     }
     
+    //When the users lets go of a node, we assign nil to draggingNode
     public override func mouseUp(with event: NSEvent) {
         draggingNode = nil
     }
     
     public override func mouseDragged(with event: NSEvent) {
         let point = event.location(in: self)
+        //If let our node equal our currently dragged node (or the first other node if that fails)
         if let hitNode = draggingNode ?? self.nodes(at: point).first as? SKLabelNode {
-            
+            //Keep track of the dragged node
             draggingNode = hitNode
+            //So long as our node is not one of the important ones
             if !( ((hitNode.name?.contains("enter")) ?? false) || ((hitNode.name?.contains("back")) ?? false) || ((hitNode.name?.contains("question")) ?? false)){
                 let newPoint = CGPoint(x: point.x, y: point.y - (hitNode.frame.height / 2))
                 var snapped = false
+                
+                //We check with each enterBox if the correct number is being dropped into it.
                 for (index, enterNode) in enterNodes.enumerated(){
                     if enterNode.frame.contains(hitNode.frame){
                         snapped = true
@@ -136,21 +158,26 @@ public class LevelOneScene: SKScene{
                         if index == 0{
                             print("\(hitNode.attributedText?.string) into \(correctAnswer.first!)")
                             if hitNode.attributedText?.string == String(correctAnswer.first!){
+                                //Place the number in the center of the enter box
                                 hitNode.position = CGPoint(x: enterNode.frame.midX, y: enterNode.frame.midY - (hitNode.frame.height / 2 ))
+                                //If it's the right number we make it green.
                                 FontManager.convertToHalogen(label: hitNode, text: String(correctAnswer.first!), fontSize: 80, withColor: ColorManager.neonGreen)
                                 correctFirstNumber = true
-                                if correctAnswer.count == 1{
+                                if correctAnswer.count == 1{ //If the answer is a single digit, we use this to make sure the user can proceed.
                                     correctSecondNumber = true
                                 }
                             } else {
+                                //If it's not the right number, we make it red.
                                 FontManager.convertToHalogen(label: hitNode, text: hitNode.attributedText!.string, fontSize: 80, withColor: ColorManager.neonRed)
                                 hitNode.position = newPoint
                                 
                             }
                         }
+                        //Second enter box
                         if index == 1{
                             print("\(hitNode.attributedText?.string) into \(correctAnswer.last!)")
                             if hitNode.attributedText?.string == String(correctAnswer.last!){
+                                //Place the number in the center of the enter box
                                 hitNode.position = CGPoint(x: enterNode.frame.midX, y: enterNode.frame.midY - (hitNode.frame.height / 2 ))
                                 FontManager.convertToHalogen(label: hitNode, text: String(correctAnswer.last!), fontSize: 80, withColor: ColorManager.neonGreen)
                                 correctSecondNumber = true
@@ -166,14 +193,17 @@ public class LevelOneScene: SKScene{
                         }
                     } else {
                         if !snapped{
+                            //If it's not snapped, we convert it back to white
                             FontManager.convertToHalogen(label: hitNode, text: hitNode.attributedText!.string, fontSize: 80, withColor: ColorManager.neonWhite)
                             hitNode.position = newPoint
                         }
                     }
+                    //IF the user has both numbers correct and hasn't already finished, we check if there are any questions left.
                     if correctFirstNumber && correctSecondNumber && !finished{
                         print("Finsihed")
                         print(completedQuestions)
                         print(questionCount)
+                        //IF there are more questions, we generate a new one
                         if completedQuestions <= questionCount && !processing{
                             processing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.75, execute: {
@@ -188,6 +218,7 @@ public class LevelOneScene: SKScene{
                                 
                             })
                         } else {
+                            //Otherwise, we quit the level.
                             if completedQuestions >= questionCount{
                                self.userDidFinishLevel(1)
                             }
@@ -196,8 +227,6 @@ public class LevelOneScene: SKScene{
                 }
             }
         }
-        previousPoint = point
-        
     }
     public override func mouseDown(with event: NSEvent) {
         let point = event.location(in: self)

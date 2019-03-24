@@ -186,19 +186,19 @@ public class MenuScene: SKScene{
     public override func mouseDown(with event: NSEvent) {
         let point = event.location(in: self)
         let hitNodes = self.nodes(at: point)
-        
+        print("Clicked")
         let levelNodes = hitNodes.compactMap {$0 as? LevelNode}
         if let level = levelNodes.first{
+            print("let first")
             guard let levelNumber = level.level else {
+                print("Lol no")
                 fatalError("Could not find level")
             }
             
-            //If the level isn't unlocked yet and it's not the first level
-            if levels[levelNumber].associatedLabel?.fontColor == ColorManager.neonRed && levelNumber != 1{
-                return
-            }
+            
             if !zoomed{
                 zoomed = true
+                print("Loading level \(levelNumber)")
                 loadLevel(levelNumber)
             } else {
                 print("Zoom out")
@@ -207,6 +207,8 @@ public class MenuScene: SKScene{
             }
             
         } else if hitNodes.contains((startLabel as SKNode)){
+            print("Load first")
+            print("AHFRISGH")
              loadLevel(1)
         } else {
             print("Else")

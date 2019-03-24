@@ -1,15 +1,16 @@
 import Foundation
 import SpriteKit
-import AVFoundation
 
 public class LevelTwoScene: SKScene{
     
+    //The physical keys on your computer
     let keys = ["A", "S", "D", "F", "G", "H"]
     var pianoKeyNodes = [SKSpriteNode]()
     var mappedPianoKeys = [String: SKSpriteNode]()
+    
+    //The correct key order
     let order = "AAGGHHGFFDDSSA"
     var playedKeys = ""
-    var player: AVAudioPlayer?
     
     private var backButton: SKLabelNode?
     private var questionLabel: SKLabelNode?
@@ -23,8 +24,10 @@ public class LevelTwoScene: SKScene{
         questionLabel = self.childNode(withName: "questionLabel") as? SKLabelNode
         orderLabel = self.childNode(withName: "orderLabel") as? SKLabelNode
         
+        //Fetch all SKSpriteNodes from our view
         self.pianoKeyNodes = self.children.compactMap {$0 as? SKSpriteNode}
         
+        //Map each key node to a key
         for (index, element) in self.pianoKeyNodes.enumerated(){
             self.mappedPianoKeys[keys[index]] = element
         }
@@ -64,8 +67,10 @@ public class LevelTwoScene: SKScene{
     func handleKeyDownEvent(_ event: NSEvent){
         if let pressedCharacters = event.characters{
             pressedCharacters.forEach {char in
+                //Append the key to our played key string
                 playedKeys += (String(char).uppercased())
                 
+                //Handle the key press
                 switch char{
                 case "a", "A":
                     print("Play Key A")
@@ -94,6 +99,7 @@ public class LevelTwoScene: SKScene{
                 default:
                     print("No sound for key")
                 }
+                //If our played keys contains the correct order, the user can proceed
                 if playedKeys.contains(order){
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                         self.userDidFinishLevel(2)
@@ -102,6 +108,7 @@ public class LevelTwoScene: SKScene{
             }
         }
     }
+    //Animate the key to be gray or white, depending on whether the key is down or up.
     func animateKeyPress(forKey key: String, down: Bool){
         self.mappedPianoKeys[key]?.color = down ? .gray : .white
        
@@ -135,7 +142,7 @@ public class LevelTwoScene: SKScene{
         }
     }
 
-    
+    //Given a letter this function plays a sound
     func playKey(_ key: String){
         guard let soundFile = Bundle.main.url(forResource: key, withExtension: "wav") else {return}
         NSSound(contentsOf: soundFile, byReference: false)?.play()

@@ -11,4 +11,5 @@ public class LevelNode: SKShapeNode{
     //The associated label is the number on top of the node.
     public var associatedLabel: SKLabelNode?
     
+    
 }
